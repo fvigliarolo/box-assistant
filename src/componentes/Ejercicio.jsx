@@ -1,0 +1,33 @@
+import { useState } from 'react';
+import Stopwatch from '../assets/stopwatch-blanco.svg';
+import Fire from '../assets/flame-blanco.svg';
+import Gota from '../assets/gota-blanco.svg';
+
+export function Ejercicio({ nombre, rounds, trabajo = 0, descanso = 0, combinaciones = [], aclaraciones = '' }) {
+
+    const [verInfo, setVerInfo] = useState(false);
+    const handleVerInfo = () => setVerInfo(!verInfo);
+    const verInfoClass = verInfo ? 'ver-info' : 'no-ver-info';
+
+    return (
+        <div className="componente-ejercicio">
+            <div className="nombre-ejercicio">
+                <h1>{nombre}</h1>
+            </div>
+            <div className="atributos-ejercicio">
+                {combinaciones.length > 0 && <p>{combinaciones.join(', ')}</p>}
+                <div className='atributos-ejercicio-footer'>
+                    <p><img src={Stopwatch} /> {rounds}</p>
+                    {(trabajo > 0 && descanso > 0) && (
+                        <>
+                            <p><img src={Fire} />{trabajo}</p>
+                            <p><img src={Gota} />{descanso}</p>
+                        </>
+                    )}
+                </div>
+                {aclaraciones != '' && (<button className={verInfo ? 'ver-info-button-clicked' : 'ver-info-button'} onClick={handleVerInfo}></button>)}
+                {aclaraciones && <p className={verInfoClass}>{aclaraciones}</p>}
+            </div>
+        </div>
+    );
+}
