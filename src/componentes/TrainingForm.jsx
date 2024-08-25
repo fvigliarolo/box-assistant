@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { EjerciciosContext } from '../context/ejerciciosContext';
-// import { Ejercicio } from './Ejercicio';
 import { GolpeAutosuggest } from '../../public/GolpeAutoSuggest';
-import { BottomSheet } from './BottomSheet';
 import Stopwatch from '../assets/stopwatch-blanco.svg';
 import Fire from '../assets/flame-blanco.svg';
 import Gota from '../assets/gota-blanco.svg';
@@ -16,10 +14,22 @@ export function TrainingForm() {
     trabajo: '',
     descanso: '',
     aclaraciones: '',
-    combinaciones: []
+    combinaciones: [],
+    edit: false
   }
-
+  
   const [formData, setFormData] = useState(formLimpio);
+  const [ejercicios, setEjercicios] = React.useContext(EjerciciosContext);
+  const [confirmButton, setConfirmButton] = useState(true);
+
+ useEffect(() => {
+  const ejercicioEdit = ejercicios.find((elemento) => elemento.edit === true)
+  if (ejercicioEdit != undefined) {
+    setConfirmButton(false);
+    setFormData(ejercicioEdit);
+  }
+ }, [ejercicios])
+
   const [step, setStep] = useState(1);
   const nextStep = () => {
     if ((step == 1 && formData.nombre == '') || (step == 1 && formData.rounds == '')) {
@@ -29,7 +39,7 @@ export function TrainingForm() {
     setStep(step + 1)
   };
   const prevStep = () => setStep(step - 1);
-  const [ejercicios, setEjercicios] = React.useContext(EjerciciosContext);
+
   const [verInfo, setVerInfo] = useState(false);
   const handleVerInfo = () => setVerInfo(!verInfo);
   const verInfoClass = verInfo ? 'ver-info' : 'no-ver-info';
@@ -50,7 +60,7 @@ export function TrainingForm() {
   }
 
 
-  const handleChange = (e) => {
+  const handleChange = useCallback((e) => {
     if (e.target.type === 'select-multiple') {
       // Si es un campo select-multiple, obtenemos las opciones seleccionadas
       const selectedOptions = [];
@@ -71,33 +81,44 @@ export function TrainingForm() {
         return newFormData;
       });
     }
-  };
+  });
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setStep(1);
 
-    const nuevoEjercicio = formData;
-    setEjercicios([...ejercicios, nuevoEjercicio]);
+    if (!confirmButton){
+      setEjercicios(prevEjercicio => {
+       const newEjercicios = [...prevEjercicio]
+       const index = newEjercicios.findIndex((elemento) => elemento.edit === true)
+       formData.edit = false
+       newEjercicios[index] = formData
+       return newEjercicios
+      })
+      setConfirmButton(true)
+    }else{
+      const nuevoEjercicio = formData;
+      setEjercicios([...ejercicios, nuevoEjercicio]);
+    }
     setFormData(formLimpio);
   };
 
 
   return (
     <div className="crear-ejercicios">
-      {formData.nombre != '' && (<div className="card-ejercicio">
+      {(formData.nombre != '' && formData.nombre ) && (<div className="card-ejercicio">
         <div className="nombre-ejercicio">
-          {formData.nombre != '' && (<h1>{formData.nombre}</h1>)}
+          {(formData.nombre != '' && formData.nombre ) && (<h1>{formData.nombre}</h1>)}
         </div>
         <div className="atributos-ejercicio">
           {formData.combinaciones.length > 0 && <p>{formData.combinaciones.join(', ')}</p>}
           <div className='atributos-ejercicio-footer'>
-            {formData.rounds != '' && (<p> <img src={Stopwatch} /> <span>{formData.rounds}</span></p>)}
-            {formData.trabajo != '' && (<p> <img src={Fire} /> <span> {formData.trabajo}</span></p>)}
-            {formData.descanso != '' && (<p><img src={Gota} /> {formData.descanso}</p>)}
+            {(formData.rounds != '' && formData.rounds ) && (<p> <img src={Stopwatch} /> <span>{formData.rounds}</span></p>)} {/* Verificar que existe el campo y que es vacio*/}
+            {(formData.trabajo != '' && formData.trabajo ) && (<p> <img src={Fire} /> <span> {formData.trabajo}</span></p>)}
+            {(formData.descanso != '' && formData.descanso ) && (<p><img src={Gota} /> {formData.descanso}</p>)}
           </div>
-          {formData.aclaraciones != '' && (<button className={verInfo ? 'ver-info-button-clicked' : 'ver-info-button'} onClick={handleVerInfo}></button>)}
+          {(formData.aclaraciones != '' && formData.aclaraciones ) && (<button className={verInfo ? 'ver-info-button-clicked' : 'ver-info-button'} onClick={handleVerInfo}></button>)}
           {formData.aclaraciones && <p className={verInfoClass}>{formData.aclaraciones}</p>}
         </div>
       </div>)}
@@ -152,13 +173,13 @@ export function TrainingForm() {
                 </div>
                 <div className="button-group">
                   <button className="prev-button" type="button" onClick={prevStep}>Anterior</button>
-                  <button className="next-button" type="submit">Agregar ejercicio</button>
+                  {confirmButton ? <button className="next-button" type="submit">Agregar ejercicio</button>
+                   : <button className="edit-button" type="submit">Editar ejercicio</button>}
                 </div>
               </div>
             )}
         </form>
       </div>
-      <BottomSheet listaEjercicios={ejercicios} />
     </div>
   );
 };

@@ -22,28 +22,14 @@ body {
 .crear-ejercicios {
     display: flex;
     justify-content: center;
-    margin-top: 1rem; /* Reducir margen para mobile */
+    margin-top: 1rem; 
     flex-direction: column;
 }
-
-/* .form-crear-ejercicios {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1rem; 
-    border-radius: 15px; 
-    width: 100%; 
-    max-width: 400px; 
-    padding: 1rem; 
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    height: auto; 
-} */
 
 .form-crear-ejercicios {
   width: 100%;
   max-width: 350px;
-  margin: 0 auto; /* Centrado horizontal */
+  margin: 0 auto;
   padding: 0 1.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 15px;
@@ -56,10 +42,10 @@ body {
 
 
 .form-crear-ejercicios h1 {
-    font-size: 2rem; /* Tamaño de fuente ajustado para mobile */
+    font-size: 2rem;
     font-weight: 500;
     color: #FFF;
-    margin: 1.5rem 0; /* Ajustar márgenes */
+    margin: 1.5rem 0;
     align-self: flex-start;
     text-shadow: 2px 2px 2px rgba(135, 135, 135, 0.2);
 }
@@ -67,15 +53,15 @@ body {
 .label-formulario {
     color: #000;
     display: block;
-    margin-bottom: 0.5rem; /* Añadir margen inferior */
+    margin-bottom: 0.5rem;
 }
 
 .form-crear-ejercicios input, 
 .form-crear-ejercicios textarea {
     width: 100%;
-    padding: 0.75rem; /* Ajustar padding para mobile */
-    margin: 0.75rem 0; /* Ajustar márgenes para mobile */
-    border-radius: 8px; /* Redondeo menor para mobile */
+    padding: 0.75rem; 
+    margin: 0.75rem 0; 
+    border-radius: 8px; 
     border: 1px solid #000;
 }
 
@@ -86,12 +72,9 @@ body {
 }
 
 .componente-ejercicio { 
-
   display: flex;
-  width: 100%; /* Ancho completo en mobile */
-  max-width: 400px; /* Limitar ancho en pantallas más grandes */
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
-  
+  width: 100%;
+  max-width: 400px;
 }
 
 
@@ -111,13 +94,13 @@ body {
 }
 
 .nombre-ejercicio {
-    font-size: 1.25rem; /* Tamaño de fuente ajustado para mobile */
+    font-size: 1.25rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 0.75rem; /* Ajustar márgenes */
+    margin-bottom: 0.75rem;
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid #fff; /* Mejorar el estilo de la línea */
+    border-bottom: 1px solid #fff;
 }
 
 .lista-ejercicios {
@@ -141,7 +124,7 @@ body {
 }
 
 .atributos-ejercicio-footer p {
-    font-size: 1.25rem; /* Ajustar tamaño de fuente para mobile */
+    font-size: 1.25rem;
     font-weight: 700;
     color: #fff;
     margin: 0.5rem 0;

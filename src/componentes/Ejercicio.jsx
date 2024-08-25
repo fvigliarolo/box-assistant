@@ -36,7 +36,7 @@ export function Ejercicio({ nombre, rounds, trabajo = 0, descanso = 0, combinaci
             {isSelected && (
             <div className="card-actions">
                 <div className="eliminar-button" onClick={onDelete}> <img src={Eliminar} alt="" /></div>
-                <div className="edit-button"><img src={Editar} alt="" /></div>
+                <div className="edit-button" onClick={onEdit}><img src={Editar} alt="" /></div>
             </div>
             )}
         </div>
