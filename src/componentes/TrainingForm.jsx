@@ -5,6 +5,7 @@ import Stopwatch from '../assets/stopwatch-blanco.svg';
 import Fire from '../assets/flame-blanco.svg';
 import Gota from '../assets/gota-blanco.svg';
 import Remove from '../assets/remove_button.svg'
+import { supabase } from '../client';
 
 export function TrainingForm() {
 
@@ -84,7 +85,7 @@ export function TrainingForm() {
   });
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStep(1);
 
@@ -99,6 +100,13 @@ export function TrainingForm() {
       setConfirmButton(true)
     }else{
       const nuevoEjercicio = formData;
+
+      try{
+        const reuslt = await supabase.from('Ejercicios').insert([nuevoEjercicio]);
+        console.log(reuslt)
+      }catch(error){
+        console.log(error)
+      }
       setEjercicios([...ejercicios, nuevoEjercicio]);
     }
     setFormData(formLimpio);
@@ -112,7 +120,7 @@ export function TrainingForm() {
           {(formData.nombre != '' && formData.nombre ) && (<h1>{formData.nombre}</h1>)}
         </div>
         <div className="atributos-ejercicio">
-          {formData.combinaciones.length > 0 && <p>{formData.combinaciones.join(', ')}</p>}
+          {(formData.combinaciones.length > 0 && formData.combinaciones != "[]") && <p>{formData.combinaciones.join(', ')}</p>}
           <div className='atributos-ejercicio-footer'>
             {(formData.rounds != '' && formData.rounds ) && (<p> <img src={Stopwatch} /> <span>{formData.rounds}</span></p>)} {/* Verificar que existe el campo y que es vacio*/}
             {(formData.trabajo != '' && formData.trabajo ) && (<p> <img src={Fire} /> <span> {formData.trabajo}</span></p>)}

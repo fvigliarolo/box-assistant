@@ -19,7 +19,7 @@ export function Ejercicio({ nombre, rounds, trabajo = 0, descanso = 0, combinaci
                     <h1>{nombre}</h1>
                 </div>
                 <div className="atributos-ejercicio">
-                    {combinaciones.length > 0 && <p>{combinaciones.join(', ')}</p>}
+                    {(combinaciones.length > 0 && combinaciones != "[]") && <p>{combinaciones.join(', ')}</p>}
                     <div className='atributos-ejercicio-footer'>
                         <p><img src={Stopwatch} /> {rounds}</p>
                         {(trabajo > 0 && descanso > 0) && (
