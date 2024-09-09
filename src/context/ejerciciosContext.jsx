@@ -11,7 +11,6 @@ export const EjerciciosProvider = ({ children }) => {
         const fetchEjercicios = async () => {
             try {
                 const ejerciciosDB = await supabase.from('Ejercicios').select('*');
-                console.log(ejerciciosDB.data);
                 setEjercicios(ejerciciosDB.data);
             } catch (error) {
                 console.log("error---------------" + error);

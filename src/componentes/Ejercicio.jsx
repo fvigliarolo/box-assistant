@@ -5,7 +5,7 @@ import Gota from '../assets/gota-blanco.svg';
 import Eliminar from '../assets/eliminar_button.svg';
 import Editar from '../assets/edit_button.svg';
 
-export function Ejercicio({ nombre, rounds, trabajo = 0, descanso = 0, combinaciones = [], aclaraciones = '', isSelected, onSelectedCard, onEdit, onDelete }) { 
+export function Ejercicio({ id, nombre, rounds, trabajo = 0, descanso = 0, combinaciones = [], aclaraciones = '', isSelected, onSelectedCard, onEdit, onDelete }) { 
 
     combinaciones = JSON.parse(combinaciones); // las combinaciones vienen de la DB como string, por lo que hay que convertirlas a array
     const [verInfo, setVerInfo] = useState(false);

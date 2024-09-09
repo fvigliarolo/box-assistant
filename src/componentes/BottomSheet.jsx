@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Ejercicio } from './Ejercicio';
 import { EjerciciosContext } from '../context/ejerciciosContext';
+import { supabase } from '../client';
 
 export function BottomSheet() {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,13 +15,24 @@ export function BottomSheet() {
         setSelectedCard(selectedElement);
     }
 
-    const handleEjercicioDelete = (index) => {
-        setEjercicios(prevEjercicios => {
-            const newEjercicios = [...prevEjercicios];
-            newEjercicios.splice(index, 1);
-            return newEjercicios;
-        });
-    }
+    const handleEjercicioDelete = async (index) => {
+        const ejercicioToDelete = ejercicios[index];
+        
+        try {
+            const result = await supabase.from('Ejercicios').delete().match({ id: ejercicioToDelete.id });
+            if (result.error === null) {
+                setEjercicios(prevEjercicios => {
+                    const newEjercicios = [...prevEjercicios];
+                    newEjercicios.splice(index, 1);
+                    return newEjercicios;
+                });
+            } else {
+                console.error('Error al eliminar el ejercicio:', result.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     const handleEjercicioEdit = (index) => {
         setEjercicios(prevEjercicios =>{
