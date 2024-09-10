@@ -38,10 +38,9 @@ export function BottomSheet() {
         setEjercicios(prevEjercicios =>{
             const newEjercicios = [...prevEjercicios];
             newEjercicios[index].edit = true;
-            handleEjercicioDelete(index);
-            setIsOpen(false);
             return newEjercicios;
         })
+        setIsOpen(false);
         
     }
 
