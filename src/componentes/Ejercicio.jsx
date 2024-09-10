@@ -7,7 +7,6 @@ import Editar from '../assets/edit_button.svg';
 
 export function Ejercicio({ id, nombre, rounds, trabajo = 0, descanso = 0, combinaciones = [], aclaraciones = '', isSelected, onSelectedCard, onEdit, onDelete }) { 
 
-    combinaciones = JSON.parse(combinaciones); // las combinaciones vienen de la DB como string, por lo que hay que convertirlas a array
     const [verInfo, setVerInfo] = useState(false);
     const handleVerInfo = () => setVerInfo(!verInfo);
     const verInfoClass = verInfo ? 'ver-info' : 'no-ver-info';

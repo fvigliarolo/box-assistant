@@ -11,6 +11,9 @@ export const EjerciciosProvider = ({ children }) => {
         const fetchEjercicios = async () => {
             try {
                 const ejerciciosDB = await supabase.from('Ejercicios').select('*');
+                ejerciciosDB.data.forEach(ejercicio => {
+                    ejercicio.combinaciones = JSON.parse(ejercicio.combinaciones);
+                });
                 setEjercicios(ejerciciosDB.data);
             } catch (error) {
                 console.log("error---------------" + error);
