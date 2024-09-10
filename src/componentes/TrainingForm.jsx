@@ -6,6 +6,7 @@ import Fire from '../assets/flame-blanco.svg';
 import Gota from '../assets/gota-blanco.svg';
 import Remove from '../assets/remove_button.svg'
 import { supabase } from '../client';
+import cuid from 'cuid';
 
 export function TrainingForm() {
 
@@ -90,6 +91,9 @@ export function TrainingForm() {
     setStep(1);
 
     if (!confirmButton){
+      try{
+        const result = await supabase.from('Ejercicios').update(formData).match({id: formData.id});
+        result.status === 200 ? console.log('Ejercicio actualizado') : console.log('Error al actualizar el ejercicio')
       setEjercicios(prevEjercicio => {
        const newEjercicios = [...prevEjercicio]
        const index = newEjercicios.findIndex((elemento) => elemento.edit === true)
@@ -97,10 +101,14 @@ export function TrainingForm() {
        newEjercicios[index] = formData
        return newEjercicios
       })
+    }catch(error){
+      console.log(error)
+    }
       setConfirmButton(true)
     }else{
       const nuevoEjercicio = formData;
-
+      nuevoEjercicio.id = cuid()
+      console.log(nuevoEjercicio)
       try{
         const reuslt = await supabase.from('Ejercicios').insert([nuevoEjercicio]);
         console.log(reuslt)
