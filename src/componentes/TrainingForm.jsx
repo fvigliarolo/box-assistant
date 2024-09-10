@@ -19,18 +19,18 @@ export function TrainingForm() {
     combinaciones: [],
     edit: false
   }
-  
+
   const [formData, setFormData] = useState(formLimpio);
   const [ejercicios, setEjercicios] = React.useContext(EjerciciosContext);
   const [confirmButton, setConfirmButton] = useState(true);
 
- useEffect(() => {
-  const ejercicioEdit = ejercicios.find((elemento) => elemento.edit === true)
-  if (ejercicioEdit != undefined) {
-    setConfirmButton(false);
-    setFormData(ejercicioEdit);
-  }
- }, [ejercicios])
+  useEffect(() => {
+    const ejercicioEdit = ejercicios.find((elemento) => elemento.edit === true)
+    if (ejercicioEdit != undefined) {
+      setConfirmButton(false);
+      setFormData(ejercicioEdit);
+    }
+  }, [ejercicios])
 
   const [step, setStep] = useState(1);
   const nextStep = () => {
@@ -52,7 +52,7 @@ export function TrainingForm() {
       return newFormData;
     });
   };
-  
+
   const handleRemoveGolpe = (e) => {
     e.preventDefault();
     setFormData(prevFormData => ({
@@ -90,29 +90,29 @@ export function TrainingForm() {
     e.preventDefault();
     setStep(1);
 
-    if (!confirmButton){
-      try{
-        const result = await supabase.from('Ejercicios').update(formData).match({id: formData.id});
+    if (!confirmButton) {
+      try {
+        formData.edit = false
+        const result = await supabase.from('Ejercicios').update(formData).match({ id: formData.id });
         result.status === 200 ? console.log('Ejercicio actualizado') : console.log('Error al actualizar el ejercicio')
-      setEjercicios(prevEjercicio => {
-       const newEjercicios = [...prevEjercicio]
-       const index = newEjercicios.findIndex((elemento) => elemento.edit === true)
-       formData.edit = false
-       newEjercicios[index] = formData
-       return newEjercicios
-      })
-    }catch(error){
-      console.log(error)
-    }
+        setEjercicios(prevEjercicio => {
+          const newEjercicios = [...prevEjercicio]
+          const index = newEjercicios.findIndex((elemento) => elemento.edit === true)
+          newEjercicios[index] = formData
+          return newEjercicios
+        })
+      } catch (error) {
+        console.log(error)
+      }
       setConfirmButton(true)
-    }else{
+    } else {
       const nuevoEjercicio = formData;
       nuevoEjercicio.id = cuid()
       console.log(nuevoEjercicio)
-      try{
+      try {
         const reuslt = await supabase.from('Ejercicios').insert([nuevoEjercicio]);
         console.log(reuslt)
-      }catch(error){
+      } catch (error) {
         console.log(error)
       }
       setEjercicios([...ejercicios, nuevoEjercicio]);
@@ -123,18 +123,18 @@ export function TrainingForm() {
 
   return (
     <div className="crear-ejercicios">
-      {(formData.nombre != '' && formData.nombre ) && (<div className="card-ejercicio">
+      {(formData.nombre != '' && formData.nombre) && (<div className="card-ejercicio">
         <div className="nombre-ejercicio">
-          {(formData.nombre != '' && formData.nombre ) && (<h1>{formData.nombre}</h1>)}
+          {(formData.nombre != '' && formData.nombre) && (<h1>{formData.nombre}</h1>)}
         </div>
         <div className="atributos-ejercicio">
           {(formData.combinaciones.length > 0 && formData.combinaciones != "[]") && <p>{formData.combinaciones.join(', ')}</p>}
           <div className='atributos-ejercicio-footer'>
-            {(formData.rounds != '' && formData.rounds ) && (<p> <img src={Stopwatch} /> <span>{formData.rounds}</span></p>)} {/* Verificar que existe el campo y que es vacio*/}
-            {(formData.trabajo != '' && formData.trabajo ) && (<p> <img src={Fire} /> <span> {formData.trabajo}</span></p>)}
-            {(formData.descanso != '' && formData.descanso ) && (<p><img src={Gota} /> {formData.descanso}</p>)}
+            {(formData.rounds != '' && formData.rounds) && (<p> <img src={Stopwatch} /> <span>{formData.rounds}</span></p>)} {/* Verificar que existe el campo y que es vacio*/}
+            {(formData.trabajo != '' && formData.trabajo) && (<p> <img src={Fire} /> <span> {formData.trabajo}</span></p>)}
+            {(formData.descanso != '' && formData.descanso) && (<p><img src={Gota} /> {formData.descanso}</p>)}
           </div>
-          {(formData.aclaraciones != '' && formData.aclaraciones ) && (<button className={verInfo ? 'ver-info-button-clicked' : 'ver-info-button'} onClick={handleVerInfo}></button>)}
+          {(formData.aclaraciones != '' && formData.aclaraciones) && (<button className={verInfo ? 'ver-info-button-clicked' : 'ver-info-button'} onClick={handleVerInfo}></button>)}
           {formData.aclaraciones && <p className={verInfoClass}>{formData.aclaraciones}</p>}
         </div>
       </div>)}
@@ -190,7 +190,7 @@ export function TrainingForm() {
                 <div className="button-group">
                   <button className="prev-button" type="button" onClick={prevStep}>Anterior</button>
                   {confirmButton ? <button className="next-button" type="submit">Agregar ejercicio</button>
-                   : <button className="edit-button" type="submit">Editar ejercicio</button>}
+                    : <button className="edit-button" type="submit">Editar ejercicio</button>}
                 </div>
               </div>
             )}
